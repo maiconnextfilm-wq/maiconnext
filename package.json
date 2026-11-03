@@ -7,7 +7,8 @@
     "studio": "remotion studio",
     "render": "remotion render NextCreatorsReel out/next-creators-reel.mp4",
     "still": "remotion still NextCreatorsReel out/preview.png --frame=60",
-    "render:v2": "remotion render NextCreatorsReelV2 out/next-creators-reel-v2.mp4"
+    "render:v2": "remotion render NextCreatorsReelV2 out/next-creators-reel-v2.mp4",
+    "trilha": "python3 scripts/trilha.py"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.540",

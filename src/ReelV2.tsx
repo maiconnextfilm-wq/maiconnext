@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, interpolate, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {FilmTexture, useHandheld} from './components';
 import {
   Aperture, CtaButton, DrawPath, ease, FilmStrip, FloatingMarks, NumberBadge, Orbit, PlayButton, Stopwatch, Waveform,
@@ -328,6 +328,8 @@ export const NextCreatorsReelV2: React.FC = () => {
   const zoomIn = interpolate(frame, [0, 40], [1.08, 1], {...clamp, easing: ease});
   return (
     <AbsoluteFill style={{background: '#000'}}>
+      {/* Trilha original sincronizada (gerada por scripts/trilha.py) */}
+      <Audio src={staticFile('audio/trilha-v2.wav')} />
       <AbsoluteFill style={{filter: blurIn > 0.1 ? `blur(${blurIn}px)` : undefined, transform: `scale(${zoomIn})`}}>
         <Background />
         {timeline.map((s, i) => {
