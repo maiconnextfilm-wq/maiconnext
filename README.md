@@ -7,10 +7,13 @@ npm install
 npm run studio   # editar/visualizar no navegador
 npm run render     # v1 → out/next-creators-reel.mp4
 npm run render:v2  # v2 → out/next-creators-reel-v2.mp4
+npm run render:neon  # neon → out/reel-neon.mp4
 ```
 
 - v1: `src/NextCreatorsReel.tsx`
 - v2 (transições suaves, grafismos e botões animados): `src/ReelV2.tsx` + `src/graphics.tsx`
+
+- Neon (verde neon e preto, grade em perspectiva, glitch, HUD de câmera): `src/ReelNeon.tsx` — paleta no objeto `neon`
 
 Roteiro e tempos ficam no array/objeto `SCENES` de cada arquivo. Cores e fontes: `src/theme.ts`.
 A v1 sai sem áudio. A v2 tem trilha original sintetizada (livre de direitos), sincronizada com as cenas:
