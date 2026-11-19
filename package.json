@@ -10,6 +10,8 @@
     "render:v2": "remotion render NextCreatorsReelV2 out/next-creators-reel-v2.mp4",
     "trilha": "python3 scripts/trilha.py",
     "render:neon": "remotion render ReelNeon out/reel-neon.mp4",
+    "render:intro": "remotion render IntroNeon out/intro-neon.mp4 && remotion render IntroNeonVertical out/intro-neon-vertical.mp4",
+    "som:intro": "python3 scripts/intro_som.py",
     "render:baloes": "remotion render BaloesHolograficos out/baloes-holograficos.mp4"
   },
   "dependencies": {

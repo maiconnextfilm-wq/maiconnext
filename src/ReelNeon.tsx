@@ -13,7 +13,7 @@ export const neon = {
 };
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
-const glow = (c = neon.green, k = 1) => `0 0 ${8 * k}px ${c}, 0 0 ${22 * k}px ${c}, 0 0 ${60 * k}px ${c}88`;
+export const glow = (c = neon.green, k = 1) => `0 0 ${8 * k}px ${c}, 0 0 ${22 * k}px ${c}, 0 0 ${60 * k}px ${c}88`;
 
 /** Sobreposição entre cenas em frames. */
 const T = 14;
