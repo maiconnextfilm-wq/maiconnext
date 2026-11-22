@@ -1,4 +1,4 @@
-/* Next Color — interface. */
+/* Next Film Color — interface. */
 (function () {
   'use strict';
   const $ = (s, el = document) => el.querySelector(s);
@@ -234,7 +234,7 @@
 
   // ---------- HSL ----------
   const HSL_PT = ['Vermelho', 'Laranja', 'Amarelo', 'Verde', 'Aqua', 'Azul', 'Roxo', 'Magenta'];
-  const HSL_COL = ['#ff4b4b', '#ff9a3d', '#ffe14b', '#4ade80', '#3dd6e0', '#4b7bff', '#9b5cff', '#ff4bd2'];
+  const HSL_COL = ['#e5352b', '#ff6a13', '#f2c200', '#1f9d4c', '#13b5c4', '#2563eb', '#7c3aed', '#db2777'];
   function buildHSL() {
     const chips = $('#hsl-chips'); chips.innerHTML = '';
     HSL_PT.forEach((n, i) => {
@@ -249,12 +249,12 @@
 
   // ---------- curvas ----------
   const curveCv = $('#curve'), cg = curveCv.getContext('2d');
-  const CH_COL = { m: '#ffffff', r: '#ff5a5a', g: '#4ade80', b: '#60a5fa' };
+  const CH_COL = { m: '#141414', r: '#e5352b', g: '#1f9d4c', b: '#2563eb' };
   function drawCurve() {
     const W = curveCv.width, H = curveCv.height; cg.clearRect(0, 0, W, H);
-    cg.strokeStyle = '#232733'; cg.lineWidth = 1;
+    cg.strokeStyle = '#e3e3e3'; cg.lineWidth = 1;
     for (let i = 1; i < 4; i++) { cg.beginPath(); cg.moveTo((i * W) / 4, 0); cg.lineTo((i * W) / 4, H); cg.moveTo(0, (i * H) / 4); cg.lineTo(W, (i * H) / 4); cg.stroke(); }
-    cg.strokeStyle = '#3a3f4d'; cg.beginPath(); cg.moveTo(0, H); cg.lineTo(W, 0); cg.stroke();
+    cg.strokeStyle = '#c4c4c4'; cg.beginPath(); cg.moveTo(0, H); cg.lineTo(W, 0); cg.stroke();
     ['m', 'r', 'g', 'b'].forEach((ch) => {
       const pts = S.P.curves[ch]; const active = ch === S.curveCh;
       if (!active && pts.length === 2 && pts[0][1] === 0 && pts[1][1] === 1 && pts[0][0] === 0 && pts[1][0] === 1) return;
@@ -262,7 +262,7 @@
       cg.strokeStyle = CH_COL[ch]; cg.globalAlpha = active ? 1 : 0.35; cg.lineWidth = active ? 3 : 2; cg.beginPath();
       for (let i = 0; i < 256; i++) { const x = (i / 255) * W, y = H - t[i] * H; i ? cg.lineTo(x, y) : cg.moveTo(x, y); }
       cg.stroke(); cg.globalAlpha = 1;
-      if (active) pts.forEach((p) => { cg.fillStyle = '#0e1015'; cg.strokeStyle = CH_COL[ch]; cg.lineWidth = 3; cg.beginPath(); cg.arc(p[0] * W, H - p[1] * H, 9, 0, 7); cg.fill(); cg.stroke(); });
+      if (active) pts.forEach((p) => { cg.fillStyle = '#ffffff'; cg.strokeStyle = CH_COL[ch]; cg.lineWidth = 3; cg.beginPath(); cg.arc(p[0] * W, H - p[1] * H, 9, 0, 7); cg.fill(); cg.stroke(); });
     });
   }
   $$('#curve-chips .chip').forEach((b) => b.addEventListener('click', () => {

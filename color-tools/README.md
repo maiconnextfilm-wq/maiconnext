@@ -1,4 +1,4 @@
-# Next Color
+# Next Film Color
 
 App web para criar **LUTs (.cube) para vídeo** e **presets (.xmp) para Lightroom** a partir de uma imagem de referência. Roda 100% no navegador: as imagens não saem do aparelho e não precisa de servidor.
 

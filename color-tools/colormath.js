@@ -1,4 +1,4 @@
-/* Next Color — motor de cor.
+/* Next Film Color — motor de cor.
  * Tudo aqui é função pura de RGB → RGB, então qualquer look pode virar uma LUT 3D.
  * Valores RGB normalizados em [0,1], espaço sRGB (gamma).
  */
@@ -403,7 +403,7 @@
 
   // ---------- .cube ----------
   CM.toCube = function (L, title) {
-    const lines = [`TITLE "${String(title || 'Next Color').replace(/"/g, "'")}"`, '# Criado com Next Color', `LUT_3D_SIZE ${L.size}`, 'DOMAIN_MIN 0.0 0.0 0.0', 'DOMAIN_MAX 1.0 1.0 1.0'];
+    const lines = [`TITLE "${String(title || 'Next Film Color').replace(/"/g, "'")}"`, '# Criado com Next Film Color', `LUT_3D_SIZE ${L.size}`, 'DOMAIN_MIN 0.0 0.0 0.0', 'DOMAIN_MAX 1.0 1.0 1.0'];
     const d = L.data;
     for (let i = 0; i < d.length; i += 3) lines.push(`${d[i].toFixed(6)} ${d[i + 1].toFixed(6)} ${d[i + 2].toFixed(6)}`);
     return lines.join('\n') + '\n';
@@ -486,7 +486,7 @@
     const seq = (pts) => pts.map((p) => `       <rdf:li>${p[0]}, ${p[1]}</rdf:li>`).join('\n');
     const hslAttrs = CM.HSL_NAMES.map((n, i) =>
       `   crs:HueAdjustment${n}="${s.hsl.hue[i]}"\n   crs:SaturationAdjustment${n}="${s.hsl.sat[i]}"\n   crs:LuminanceAdjustment${n}="${s.hsl.lum[i]}"`).join('\n');
-    const nm = esc(name || 'Next Color');
+    const nm = esc(name || 'Next Film Color');
     return `<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 7.0-c000 1.000000, 0000/00/00-00:00:00">
  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about=""
@@ -517,7 +517,7 @@ ${hslAttrs}
    </crs:Name>
    <crs:Group>
     <rdf:Alt>
-     <rdf:li xml:lang="x-default">Next Color</rdf:li>
+     <rdf:li xml:lang="x-default">Next Film</rdf:li>
     </rdf:Alt>
    </crs:Group>
    <crs:ToneCurvePV2012>
