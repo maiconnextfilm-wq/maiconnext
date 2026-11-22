@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Next Color</title>
+  <meta name="description" content="Crie LUTs para vídeo e presets para Lightroom a partir de uma imagem de referência." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="dot"></span>Next <b>Color</b></div>
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="create">Criar look</button>
+      <button class="tab" data-tab="clone">Clonar LUT</button>
+      <button class="tab" data-tab="bridge">Converter</button>
+      <button class="tab" data-tab="aspect">Aspect ratio</button>
+    </nav>
+    <div class="mode">
+      <button class="seg active" data-mode="simple">Simplificado</button>
+      <button class="seg" data-mode="pro">Profissional</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= CRIAR LOOK ================= -->
+    <section class="view active" id="view-create">
+      <aside class="panel left">
+        <h3><span class="n">01</span> Sua imagem</h3>
+        <label class="drop" id="drop-src">
+          <input type="file" accept="image/*" hidden />
+          <img alt="" hidden />
+          <span>Arraste uma foto ou um frame do vídeo<br /><small>ou toque para escolher</small></span>
+        </label>
+
+        <h3><span class="n">02</span> Referência</h3>
+        <label class="drop" id="drop-ref">
+          <input type="file" accept="image/*" hidden />
+          <img alt="" hidden />
+          <span>A imagem que inspira a cor</span>
+        </label>
+        <button class="link" id="btn-demo">Usar imagens de exemplo</button>
+
+        <h3>Sem referência? <small>Escolha um look</small></h3>
+        <div class="looks" id="looks"></div>
+      </aside>
+
+      <div class="stage">
+        <div class="viewer" id="viewer">
+          <div class="empty" id="empty">
+            <p><b>Crie sua LUT ou preset em 4 passos</b></p>
+            <ol><li>Envie sua imagem</li><li>Escolha a referência ou um look</li><li>Ajuste luz, cor e intensidade</li><li>Baixe a LUT (.cube) ou o preset (.xmp)</li></ol>
+          </div>
+          <div class="compare" id="compare" hidden>
+            <canvas id="cv-orig"></canvas>
+            <canvas id="cv-out"></canvas>
+            <div class="divider" id="divider"><span>◀ ▶</span></div>
+            <em class="tag l">Antes</em><em class="tag r">Depois</em>
+          </div>
+        </div>
+        <div class="stagebar">
+          <span class="base" id="base-label">Base: nenhuma</span>
+          <button class="ghost" id="btn-compare">Comparar antes/depois</button>
+          <button class="ghost" id="btn-reset">Zerar ajustes</button>
+        </div>
+      </div>
+
+      <aside class="panel right">
+        <h3><span class="n">03</span> Ajuste</h3>
+        <div id="sliders"></div>
+
+        <div class="pro-only">
+          <h4>Tonalização (split toning)</h4>
+          <div id="split"></div>
+
+          <h4>HSL por cor</h4>
+          <div class="chips" id="hsl-chips"></div>
+          <div id="hsl-sliders"></div>
+
+          <h4>Curvas</h4>
+          <div class="chips" id="curve-chips">
+            <button class="chip active" data-ch="m">RGB</button>
+            <button class="chip" data-ch="r" style="--c:#ff5a5a">R</button>
+            <button class="chip" data-ch="g" style="--c:#4ade80">G</button>
+            <button class="chip" data-ch="b" style="--c:#60a5fa">B</button>
+          </div>
+          <canvas id="curve" width="512" height="512"></canvas>
+          <p class="hint">Toque para criar ponto, arraste para mover, toque duas vezes para remover.</p>
+
+          <h4>Histograma</h4>
+          <canvas id="histo" width="512" height="160"></canvas>
+        </div>
+
+        <h3><span class="n">04</span> Exportar</h3>
+        <label class="field">Nome do look<input id="look-name" value="Meu look" maxlength="60" /></label>
+        <div class="exports">
+          <button class="primary" id="btn-cube" disabled><b>Baixar LUT</b><small>.cube · vídeo</small></button>
+          <button class="primary alt" id="btn-xmp" disabled><b>Baixar preset</b><small>.xmp · Lightroom</small></button>
+        </div>
+        <button class="ghost wide" id="btn-jpg" disabled>Baixar imagem editada (.jpg)</button>
+        <p class="hint">A LUT funciona em DaVinci Resolve, Premiere, Final Cut, CapCut, VN, Filmora, Photoshop e Blackmagic Camera. O preset funciona no Lightroom do celular e do computador.</p>
+      </aside>
+    </section>
+
+    <!-- ================= CLONAR LUT ================= -->
+    <section class="view" id="view-clone">
+      <div class="card">
+        <h2>Clonar LUT</h2>
+        <p>Envie o <b>antes</b> e o <b>depois</b> do mesmo frame (já colorizado em qualquer programa). O app descobre a transformação de cor e gera uma LUT ajustável.</p>
+        <div class="pair">
+          <label class="drop big" id="drop-before"><input type="file" accept="image/*" hidden /><img alt="" hidden /><span>Antes</span></label>
+          <label class="drop big" id="drop-after"><input type="file" accept="image/*" hidden /><img alt="" hidden /><span>Depois</span></label>
+        </div>
+        <button class="primary" id="btn-clone" disabled><b>Gerar LUT</b><small>e abrir no editor</small></button>
+        <p class="hint" id="clone-info">Quanto mais cores o frame tiver, mais fiel fica a LUT. Cores que não aparecem no frame são estimadas a partir das vizinhas.</p>
+      </div>
+    </section>
+
+    <!-- ================= CONVERTER ================= -->
+    <section class="view" id="view-bridge">
+      <div class="card">
+        <h2>Converter</h2>
+        <div class="bridge">
+          <div>
+            <h3>Do vídeo para a foto</h3>
+            <p>Sua LUT <b>.cube</b> vira preset <b>.xmp</b> do Lightroom.</p>
+            <label class="drop" id="drop-cube"><input type="file" accept=".cube" multiple hidden /><span>Solte uma ou várias LUTs .cube</span></label>
+          </div>
+          <div>
+            <h3>Da foto para o vídeo</h3>
+            <p>Seu preset <b>.xmp</b> (ou <b>.dng</b> de celular) vira LUT <b>.cube</b>.</p>
+            <label class="drop" id="drop-xmp"><input type="file" accept=".xmp,.dng" multiple hidden /><span>Solte um ou vários presets</span></label>
+          </div>
+        </div>
+        <ul class="results" id="bridge-results"></ul>
+        <p class="hint">A conversão é uma aproximação: um preset de revelação não guarda uma LUT 3D, então o app traduz o look em curvas RGB, saturação e HSL. Nos tons e na tonalização fica muito próximo; cores muito específicas podem variar um pouco. Para editar o resultado antes de baixar, use “Abrir no editor”.</p>
+      </div>
+    </section>
+
+    <!-- ================= ASPECT RATIO ================= -->
+    <section class="view" id="view-aspect">
+      <div class="card">
+        <h2>Calculadora de aspect ratio</h2>
+        <div class="ar-grid">
+          <label class="field">Proporção
+            <select id="ar-ratio">
+              <option value="1.7778">16:9 (YouTube, TV)</option>
+              <option value="0.5625">9:16 (Reels, TikTok, Stories)</option>
+              <option value="0.8">4:5 (Feed Instagram)</option>
+              <option value="1">1:1 (Quadrado)</option>
+              <option value="1.3333">4:3</option>
+              <option value="1.5">3:2</option>
+              <option value="1.85">1.85:1 (Cinema flat)</option>
+              <option value="2">2:1 (Univisium)</option>
+              <option value="2.3333">21:9</option>
+              <option value="2.39" selected>2.39:1 (Cinemascope)</option>
+              <option value="custom">Personalizada…</option>
+            </select>
+          </label>
+          <label class="field" id="ar-custom" hidden>Personalizada (L:A)<input id="ar-cw" type="number" value="2.76" step="0.01" min="0.1" /></label>
+          <label class="field">Largura (px)<input id="ar-w" type="number" value="1920" min="2" /></label>
+          <label class="field">Altura (px)<input id="ar-h" type="number" value="" min="2" placeholder="calculada" /></label>
+        </div>
+        <div class="ar-out" id="ar-out"></div>
+        <h3>Barras (letterbox) dentro do frame</h3>
+        <div class="ar-grid">
+          <label class="field">Frame do projeto
+            <select id="ar-frame">
+              <option value="1920x1080">1920 × 1080 (Full HD)</option>
+              <option value="3840x2160">3840 × 2160 (4K UHD)</option>
+              <option value="1080x1920">1080 × 1920 (Vertical)</option>
+              <option value="1080x1350">1080 × 1350 (4:5)</option>
+              <option value="4096x2160">4096 × 2160 (DCI 4K)</option>
+            </select>
+          </label>
+        </div>
+        <div class="ar-box"><div id="ar-preview"><div id="ar-inner"></div></div></div>
+        <div class="ar-out" id="ar-bars"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="colormath.js"></script>
+  <script src="looks.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
