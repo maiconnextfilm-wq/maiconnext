@@ -20,7 +20,39 @@
     const t = $('#toast'); t.textContent = msg; t.hidden = false;
     clearTimeout(toast._t); toast._t = setTimeout(() => (t.hidden = true), ms);
   }
-  function download(name, content, type) {
+  // Quando roda como página publicada no claude.ai, downloads passam pela capability "downloads",
+  // que só aceita algumas extensões; .cube/.xmp vão dentro de um .zip.
+  let dl = null;
+  if (window.claude && typeof window.claude.use === 'function') window.claude.use('downloads').then((d) => (dl = d)).catch(() => {});
+  const DL_OK = /\.(jpe?g|png|txt|json|zip)$/i;
+  function zipStore(files) { // zip sem compressão (método "store")
+    const enc = new TextEncoder(), crcT = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; crcT[n] = c >>> 0; }
+    const crc = (b) => { let c = 0xffffffff; for (let i = 0; i < b.length; i++) c = crcT[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xffffffff) >>> 0; };
+    const parts = [], central = []; let off = 0;
+    files.forEach(({ name, data }) => {
+      const nb = enc.encode(name), db = typeof data === 'string' ? enc.encode(data) : data, c = crc(db);
+      const h = new DataView(new ArrayBuffer(30));
+      [[0, 0x04034b50, 4], [4, 20, 2], [6, 0x0800, 2], [8, 0, 2], [10, 0, 2], [12, 0x21, 2], [14, c, 4], [18, db.length, 4], [22, db.length, 4], [26, nb.length, 2], [28, 0, 2]]
+        .forEach(([o, v, s]) => (s === 4 ? h.setUint32(o, v, true) : h.setUint16(o, v, true)));
+      const cd = new DataView(new ArrayBuffer(46));
+      [[0, 0x02014b50, 4], [4, 20, 2], [6, 20, 2], [8, 0x0800, 2], [10, 0, 2], [12, 0, 2], [14, 0x21, 2], [16, c, 4], [20, db.length, 4], [24, db.length, 4], [28, nb.length, 2], [30, 0, 2], [32, 0, 2], [34, 0, 2], [36, 0, 2], [38, 0, 4], [42, off, 4]]
+        .forEach(([o, v, s]) => (s === 4 ? cd.setUint32(o, v, true) : cd.setUint16(o, v, true)));
+      parts.push(h, nb, db); central.push(cd, nb); off += 30 + nb.length + db.length;
+    });
+    const csize = central.reduce((s, p) => s + p.byteLength, 0), end = new DataView(new ArrayBuffer(22));
+    [[0, 0x06054b50, 4], [8, files.length, 2], [10, files.length, 2], [12, csize, 4], [16, off, 4]]
+      .forEach(([o, v, s]) => (s === 4 ? end.setUint32(o, v, true) : end.setUint16(o, v, true)));
+    return new Blob([...parts, ...central, end], { type: 'application/zip' });
+  }
+  async function download(name, content, type) {
+    if (dl) {
+      let filename = name, data = content;
+      if (!DL_OK.test(name)) { filename = name.replace(/\.[^.]+$/, '') + '.zip'; data = zipStore([{ name, data: typeof content === 'string' ? content : new Uint8Array(await content.arrayBuffer()) }]); }
+      try { await dl.save({ filename, data }); if (filename !== name) toast(`Salvo como ${filename}: descompacte para usar o ${name.split('.').pop()}.`, 4000); }
+      catch (e) { if (e && e.code !== 'declined') toast('Não foi possível salvar o arquivo aqui. Abra o app pelo index.html para baixar direto.', 4500); }
+      return;
+    }
     const blob = content instanceof Blob ? content : new Blob([content], { type });
     const url = URL.createObjectURL(blob), a = document.createElement('a');
     a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();

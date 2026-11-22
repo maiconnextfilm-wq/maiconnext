@@ -24,7 +24,7 @@ small { color: var(--muted); }
 /* ---------- topo ---------- */
 .top {
   display: flex; align-items: center; gap: 16px; padding: 10px 16px;
-  border-bottom: 1px solid var(--line); background: #0e1015; position: sticky; top: 0; z-index: 5; flex-wrap: wrap;
+  border-bottom: 1px solid var(--line); background: #0e1015; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; flex-wrap: wrap;
 }
 .brand { font-size: 17px; letter-spacing: .2px; display: flex; align-items: center; gap: 8px; }
 .brand b { color: var(--accent); }
