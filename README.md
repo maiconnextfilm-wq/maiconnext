@@ -8,6 +8,7 @@ npm run studio   # editar/visualizar no navegador
 npm run render     # v1 → out/next-creators-reel.mp4
 npm run render:v2  # v2 → out/next-creators-reel-v2.mp4
 npm run render:neon  # neon → out/reel-neon.mp4
+npm run render:premium # intro premium → out/intro-premium.mp4 (16:9) e out/intro-premium-vertical.mp4 (9:16)
 npm run render:intro # intro de apresentação neon → out/intro-neon.mp4 (16:9) e out/intro-neon-vertical.mp4 (9:16)
 ```
 
@@ -17,6 +18,8 @@ npm run render:intro # intro de apresentação neon → out/intro-neon.mp4 (16:9
 - Neon (verde neon e preto, grade em perspectiva, glitch, HUD de câmera): `src/ReelNeon.tsx` — paleta no objeto `neon`
 
 - Intro neon (8 s, logo acendendo): `src/IntroNeon.tsx`; tempos no objeto `AT`. Som: `npm run som:intro` regera `public/audio/intro-neon.wav` (`scripts/intro_som.py`, só numpy)
+
+- Intro premium (10 s, instrumento/esfera/glifos, tipografia fina): `src/IntroPremium.tsx`; tempos no objeto `AT`. Som: `npm run som:premium` (`scripts/intro_premium_som.py`, só numpy)
 
 Roteiro e tempos ficam no array/objeto `SCENES` de cada arquivo. Cores e fontes: `src/theme.ts`.
 A v1 sai sem áudio. A v2 tem trilha original sintetizada (livre de direitos), sincronizada com as cenas:

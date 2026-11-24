@@ -12,6 +12,8 @@
     "render:neon": "remotion render ReelNeon out/reel-neon.mp4",
     "render:intro": "remotion render IntroNeon out/intro-neon.mp4 && remotion render IntroNeonVertical out/intro-neon-vertical.mp4",
     "som:intro": "python3 scripts/intro_som.py",
+    "render:premium": "remotion render IntroPremium out/intro-premium.mp4 && remotion render IntroPremiumVertical out/intro-premium-vertical.mp4",
+    "som:premium": "python3 scripts/intro_premium_som.py",
     "render:baloes": "remotion render BaloesHolograficos out/baloes-holograficos.mp4"
   },
   "dependencies": {

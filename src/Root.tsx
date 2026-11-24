@@ -3,6 +3,7 @@ import {NextCreatorsReel, REEL_DURATION} from './NextCreatorsReel';
 import {NextCreatorsReelV2, REEL_V2_DURATION} from './ReelV2';
 import {ReelNeon, REEL_NEON_DURATION} from './ReelNeon';
 import {IntroNeon, INTRO_DURATION} from './IntroNeon';
+import {IntroPremium, INTRO_PREMIUM_DURATION} from './IntroPremium';
 import {BaloesHolograficos, BALOES_DURATION, BALOES_H, BALOES_W} from './Baloes';
 
 export const RemotionRoot: React.FC = () => (
@@ -13,5 +14,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="ReelNeon" component={ReelNeon} durationInFrames={REEL_NEON_DURATION} fps={30} width={1080} height={1920} />
     <Composition id="IntroNeon" component={IntroNeon} durationInFrames={INTRO_DURATION} fps={30} width={1920} height={1080} />
     <Composition id="IntroNeonVertical" component={IntroNeon} durationInFrames={INTRO_DURATION} fps={30} width={1080} height={1920} />
+    <Composition id="IntroPremium" component={IntroPremium} durationInFrames={INTRO_PREMIUM_DURATION} fps={30} width={1920} height={1080} />
+    <Composition id="IntroPremiumVertical" component={IntroPremium} durationInFrames={INTRO_PREMIUM_DURATION} fps={30} width={1080} height={1920} />
   </>
 );
