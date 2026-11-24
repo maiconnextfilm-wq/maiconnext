@@ -35,7 +35,7 @@ const Caption: React.FC<{kicker: string; line: string}> = ({kicker, line}) => {
           {kicker}
         </div>
       ) : null}
-      <div style={{fontFamily: display, fontSize: 132, lineHeight: 0.95, color: colors.ink, textAlign: 'center', whiteSpace: 'pre-line', paddingTop: 30,
+      <div style={{fontFamily: display, fontSize: 132, lineHeight: 1.08, color: colors.ink, textAlign: 'center', whiteSpace: 'pre-line', paddingTop: 30,
         textShadow: '0 6px 40px rgba(0,0,0,0.85)', clipPath: `inset(0 0 ${(1 - s) * 100}% 0)`, transform: `translateY(${(1 - s) * 40}px)`}}>
         {line}
       </div>
