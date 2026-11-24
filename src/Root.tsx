@@ -2,6 +2,7 @@ import {Composition} from 'remotion';
 import {NextCreatorsReel, REEL_DURATION} from './NextCreatorsReel';
 import {NextCreatorsReelV2, REEL_V2_DURATION} from './ReelV2';
 import {ModeloFuturo, MODELO_DURATION} from './ModeloFuturo';
+import {SerieEpisodio, EPISODIO_DURATION} from './SerieEpisodio';
 import {BaloesHolograficos, BALOES_DURATION, BALOES_H, BALOES_W} from './Baloes';
 
 export const RemotionRoot: React.FC = () => (
@@ -10,5 +11,6 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="NextCreatorsReelV2" component={NextCreatorsReelV2} durationInFrames={REEL_V2_DURATION} fps={30} width={1080} height={1920} />
     <Composition id="BaloesHolograficos" component={BaloesHolograficos} durationInFrames={BALOES_DURATION} fps={30} width={BALOES_W} height={BALOES_H} />
     <Composition id="ModeloFuturo" component={ModeloFuturo} durationInFrames={MODELO_DURATION} fps={30} width={1080} height={1920} />
+    <Composition id="SerieEpisodio" component={SerieEpisodio} durationInFrames={EPISODIO_DURATION} fps={30} width={1080} height={1920} />
   </>
 );
